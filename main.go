@@ -163,12 +163,12 @@ func run() error {
 			log.Printf("stopping: the background work did not end within %s", shutdownWait)
 		}
 	}
-	srv := &http.Server{Addr: ":" + cfg.Port, Handler: app.Handler(), ReadHeaderTimeout: 10 * time.Second}
+	srv := &http.Server{Addr: cfg.Addr(), Handler: app.Handler(), ReadHeaderTimeout: 10 * time.Second}
 	where := "at the root"
 	if cfg.BasePath != "" {
 		where = "under " + cfg.BasePath + "/"
 	}
-	log.Printf("nx notif %s on :%s (%s), %s", a.Manifest().Version, cfg.Port, cfg.Driver, where)
+	log.Printf("nx notif %s on %s (%s), %s", a.Manifest().Version, cfg.Addr(), cfg.Driver, where)
 	// With HTTPS on, the port is the HTTPS one and nothing plain listens
 	// (P9); an older install keeps HTTPS beside it.
 	httpsCtx, stopHTTPS := context.WithCancel(context.Background())

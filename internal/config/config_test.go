@@ -25,3 +25,23 @@ func TestTheInstallsBasePathAndHTTPS(t *testing.T) {
 		}
 	}
 }
+
+// TestTheListenAddress: the port is bound on every interface unless the
+// install names an address of the server — 127.0.0.1 for a reverse proxy
+// beside Notif — and anything but an address stops the start.
+func TestTheListenAddress(t *testing.T) {
+	t.Setenv("NX_OPT_PORT", "8097")
+	for raw, want := range map[string]string{"": ":8097", "127.0.0.1": "127.0.0.1:8097", "::1": "[::1]:8097", "[::1]": "[::1]:8097", " 10.0.0.5 ": "10.0.0.5:8097"} {
+		t.Setenv("NX_OPT_LISTEN", raw)
+		c, err := Load()
+		if err != nil || c.Addr() != want {
+			t.Errorf("listen %q: %q %v, want %q", raw, c.Addr(), err, want)
+		}
+	}
+	for _, bad := range []string{"localhost", "127.0.0.1:8097", "0.0.0.0/0"} {
+		t.Setenv("NX_OPT_LISTEN", bad)
+		if _, err := Load(); err == nil {
+			t.Errorf("listen %q was taken", bad)
+		}
+	}
+}

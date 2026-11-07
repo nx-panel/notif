@@ -6,6 +6,8 @@ package config
 import (
 	"errors"
 	"fmt"
+	"net"
+	"net/netip"
 	"os"
 	"path/filepath"
 	"slices"
@@ -69,6 +71,12 @@ type Config struct {
 	// request is taken to come from the address its X-Forwarded-For names.
 	// Empty, the default, trusts no header — the peer is the client.
 	TrustedProxies string
+	// Listen is the address Notif's port is bound on: empty, the default,
+	// is every interface; 127.0.0.1 keeps it to a reverse proxy on the same
+	// server, so nothing reaches Notif around the proxy. In a container the
+	// compose file publishes the port on it instead (install.sh), and Notif
+	// itself listens on every interface of the container.
+	Listen string
 }
 
 // Load reads the environment.
@@ -90,6 +98,7 @@ func Load() (Config, error) {
 		ManifestFile:   os.Getenv("NX_MANIFEST_FILE"),
 		LocalProxies:   strings.TrimSpace(addon.Option("local_proxies")),
 		TrustedProxies: strings.TrimSpace(addon.Option("trusted_proxies")),
+		Listen:         strings.Trim(strings.TrimSpace(addon.Option("listen")), "[]"),
 	}
 	if !slices.Contains(web.HTTPSModes, c.HTTPS) {
 		return c, fmt.Errorf("https must be one of %s", strings.Join(web.HTTPSModes, ", "))
@@ -99,6 +108,11 @@ func Load() (Config, error) {
 		return c, fmt.Errorf("base_path: %w", err)
 	}
 	c.BasePath = base
+	if c.Listen != "" {
+		if _, err := netip.ParseAddr(c.Listen); err != nil {
+			return c, fmt.Errorf("listen must be an IP address of this server, such as 127.0.0.1, or empty for every interface: %q", c.Listen)
+		}
+	}
 	switch c.Driver {
 	case DriverSQLite:
 		c.DSN = filepath.Join(c.DataDir, "notif.db")
@@ -125,6 +139,10 @@ func env(key, def string) string {
 	}
 	return def
 }
+
+// Addr is where Notif's port listens: the listen address, else every
+// interface.
+func (c Config) Addr() string { return net.JoinHostPort(c.Listen, c.Port) }
 
 // OnePort is whether Notif's port serves HTTPS itself, with no plain HTTP
 // beside it: HTTPS on, and no listener of its own from an older install.

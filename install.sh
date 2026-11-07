@@ -317,6 +317,16 @@ acme-http) setenv NX_HTTP_PUBLISH "80:8080" ;;
 *) setenv NX_HTTP_PUBLISH "127.0.0.1::8080" ;;
 esac
 
+# The address the port is bound on (listen): empty is every interface.
+# Under systemd Notif binds it itself; in a container Notif listens on all
+# of the container's, and compose publishes the port on this address.
+LISTEN="$(getenv NX_OPT_LISTEN | tr -d '[] ')"
+case "$LISTEN" in
+"") unsetenv NX_PORT_PUBLISH ;;
+*:*) setenv NX_PORT_PUBLISH "[${LISTEN}]:${PORT_NOW}:${PORT_NOW}" ;;
+*) setenv NX_PORT_PUBLISH "${LISTEN}:${PORT_NOW}:${PORT_NOW}" ;;
+esac
+
 # Checked: the answers are the install's.
 mv "$ENVF" "${DIR}/.env"
 ENVF="${DIR}/.env"

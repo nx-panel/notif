@@ -307,7 +307,7 @@ func (s *Server) ServeHTTPS(ctx context.Context) error {
 	}
 	addr := s.cfg.HTTPSListen
 	if addr == "" {
-		addr = ":" + s.cfg.Port
+		addr = s.cfg.Addr()
 	}
 	return s.tls.Serve(ctx, addr, s.Handler())
 }

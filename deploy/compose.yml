@@ -14,6 +14,9 @@ services:
     # file has no such line); install.sh sets :8443 for one it updates.
     environment:
       NX_HTTPS_LISTEN: "${NX_HTTPS_LISTEN:-}"
+      # The install's listen address is where the port is published (below);
+      # inside the container Notif listens on every interface.
+      NX_OPT_LISTEN: ""
     # The port may be below 1024 — acme serves on 443 — and the image's
     # user is not root.
     sysctls:
@@ -24,7 +27,8 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
-      - "${NX_OPT_PORT:-8097}:${NX_OPT_PORT:-8097}"
+      # On the install's listen address when it names one (install.sh).
+      - "${NX_PORT_PUBLISH:-${NX_OPT_PORT:-8097}:${NX_OPT_PORT:-8097}}"
       # With HTTPS on, the port above serves it. An install from before one
       # port has its HTTPS on :8443, published here; otherwise a loopback
       # port nothing uses.

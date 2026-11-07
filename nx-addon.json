@@ -189,6 +189,22 @@
           "zh": "受信任的反向代理"
         },
         "type": "string"
+      },
+      {
+        "help": {
+          "en": "Empty: every interface. 127.0.0.1 only for a reverse proxy on this server: nothing then reaches Notif around it, and the panel must reach Notif through the proxy or on this server.",
+          "fa": "خالی: همهٔ کارت‌ها. 127.0.0.1 فقط برای پراکسی معکوس روی همین سرور؛ پنل هم باید از همان پراکسی یا همین سرور برسد.",
+          "ru": "Пусто: все интерфейсы. 127.0.0.1 — только для обратного прокси на этом сервере; панель тогда ходит через него.",
+          "zh": "留空：所有网卡。127.0.0.1 仅用于本机反向代理；面板也须经该代理或本机访问。"
+        },
+        "key": "listen",
+        "label": {
+          "en": "Listen address",
+          "fa": "نشانی گوش‌دادن",
+          "ru": "Адрес прослушивания",
+          "zh": "监听地址"
+        },
+        "type": "string"
       }
     ]
   },
@@ -209,7 +225,7 @@
     }
   ],
   "setup": "/nx/setup",
-  "signature": "Y4vpksKW3TKUHmBBjV7K0NNvQLDdf+mcJoZ3Sal2cVneHCCOd9GybPGAq3z2xNPjmsuOobPy9dN+mTBuNdfSDA==",
+  "signature": "zBGyGvKflP+7Xnk4SJGUhLUNPvRQVRiB9IzSJkpe5aeCS8bGbc6I17Qvl5THui7klBWu9yaEf0vZI+Mc8U0BBA==",
   "slug": "notif",
   "ui": "/",
   "version": "0.4.1",
