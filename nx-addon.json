@@ -173,6 +173,22 @@
           "zh": "允许的机器人代理"
         },
         "type": "string"
+      },
+      {
+        "help": {
+          "en": "Only behind a reverse proxy (the panel's ingress, nginx, a CDN): its addresses or ranges, comma-separated, e.g. 127.0.0.1. Its X-Forwarded-For then names the visitor, so sign-in limits count each one apart. Empty: no header is believed.",
+          "fa": "فقط پشت پراکسی معکوس (اینگرس پنل، nginx): نشانی یا بازه‌هایش، مثل 127.0.0.1. محدودیت ورود هر بازدیدکننده را جدا می‌شمارد. خالی: بی‌اعتماد.",
+          "ru": "Только за обратным прокси (ingress панели, nginx): его адреса, напр. 127.0.0.1. Лимит входа считает каждого посетителя. Пусто: не доверять.",
+          "zh": "仅在反向代理（面板 ingress、nginx）之后：其地址或网段，如 127.0.0.1。登录限制按访客分别计数。留空：不信任。"
+        },
+        "key": "trusted_proxies",
+        "label": {
+          "en": "Trusted reverse proxies",
+          "fa": "پراکسی‌های معکوس مورد اعتماد",
+          "ru": "Доверенные обратные прокси",
+          "zh": "受信任的反向代理"
+        },
+        "type": "string"
       }
     ]
   },
@@ -193,7 +209,7 @@
     }
   ],
   "setup": "/nx/setup",
-  "signature": "Ctz9ArVQW3EMeMzQhQmYQJXjvHY52bJo3XWC7G+xImJsmkVWZWGNtcOdcFkxRm9DTGJrCzGycevcoDtXkeCXAg==",
+  "signature": "Y4vpksKW3TKUHmBBjV7K0NNvQLDdf+mcJoZ3Sal2cVneHCCOd9GybPGAq3z2xNPjmsuOobPy9dN+mTBuNdfSDA==",
   "slug": "notif",
   "ui": "/",
   "version": "0.4.1",

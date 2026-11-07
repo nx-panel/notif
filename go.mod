@@ -4,7 +4,7 @@ go 1.27.3
 
 require (
 	github.com/glebarez/sqlite v1.11.0
-	github.com/nx-panel/addon-kit v0.5.0
+	github.com/nx-panel/addon-kit v0.6.0
 	gorm.io/driver/postgres v1.6.3
 	gorm.io/gorm v1.31.2
 )

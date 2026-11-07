@@ -247,7 +247,9 @@ func TestTheCookieStaysOnHTTPS(t *testing.T) {
 		r := httptest.NewRequest("POST", "/api/login", strings.NewReader(`{"username":"admin","password":"correct horse"}`))
 		r.RemoteAddr = "192.0.2.8:4000"
 		if origin != "" {
+			// What a browser sends from Notif's own page.
 			r.Header.Set("Origin", origin)
+			r.Header.Set("Sec-Fetch-Site", "same-origin")
 		}
 		w := httptest.NewRecorder()
 		h.ServeHTTP(w, r)
@@ -274,5 +276,55 @@ func TestAnotherPanelForgetsTheCopy(t *testing.T) {
 	s.registered(addon.Credentials{Panel: addon.Panel{ID: "panel-b", URL: "https://b.example.com"}})
 	if n := gdb.Find(&[]model.User{}).RowsAffected + gdb.Find(&[]model.Chat{}).RowsAffected; n != 0 {
 		t.Fatalf("%d rows of the old panel's accounts left", n)
+	}
+}
+
+// TestBehindATrustedProxyEachVisitorIsCountedApart: behind the panel's
+// ingress or nginx every connection is the proxy's; counted by the peer, one
+// stranger's five wrong passwords lock every admin out.
+func TestBehindATrustedProxyEachVisitorIsCountedApart(t *testing.T) {
+	_, _, h := newServerWith(t, func(c *config.Config) { c.TrustedProxies = "127.0.0.1" })
+	login := func(client, password string) int {
+		r := httptest.NewRequest("POST", "/api/login", strings.NewReader(`{"username":"admin","password":"`+password+`"}`))
+		r.RemoteAddr = "127.0.0.1:4000"
+		r.Header.Set("X-Forwarded-For", client)
+		w := httptest.NewRecorder()
+		h.ServeHTTP(w, r)
+		return w.Code
+	}
+	for range 5 {
+		login("203.0.113.7", "wrong one!!")
+	}
+	if code := login("203.0.113.7", "correct horse"); code != http.StatusTooManyRequests {
+		t.Errorf("the guesser after five failures: %d, want 429", code)
+	}
+	if code := login("198.51.100.9", "correct horse"); code != http.StatusOK {
+		t.Errorf("another visitor through the same proxy: %d, want 200", code)
+	}
+}
+
+// TestAPageOnASiblingSubdomainCannotAct: SameSite=Strict does not keep the
+// cookie off a request from a sibling subdomain (another addon, the panel),
+// which is the same site; its write is refused.
+func TestAPageOnASiblingSubdomainCannotAct(t *testing.T) {
+	_, _, h := newServer(t)
+	c := session(t, call(t, h, "POST", "/api/login", `{"username":"admin","password":"correct horse"}`))
+	write := func(site string) int {
+		r := httptest.NewRequest("POST", "/api/me/2fa/totp", strings.NewReader(`{}`))
+		r.RemoteAddr = "192.0.2.7:4000"
+		r.Header.Set("Content-Type", "text/plain")
+		if site != "" {
+			r.Header.Set("Sec-Fetch-Site", site)
+		}
+		r.AddCookie(c)
+		w := httptest.NewRecorder()
+		h.ServeHTTP(w, r)
+		return w.Code
+	}
+	if code := write("same-site"); code != http.StatusForbidden {
+		t.Errorf("from a sibling subdomain: %d, want 403", code)
+	}
+	if code := write("same-origin"); code != http.StatusOK {
+		t.Errorf("from Notif's own page: %d, want 200", code)
 	}
 }

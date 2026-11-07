@@ -62,6 +62,9 @@ type Server struct {
 
 	// tls serves the public address over HTTPS; nil with https off.
 	tls *web.TLS
+	// proxies are the reverse proxies whose X-Forwarded-For is believed
+	// (the install's trusted_proxies).
+	proxies web.Proxies
 }
 
 // pendingLogin is a right password waiting for its code.
@@ -80,6 +83,11 @@ func New(gdb *gorm.DB, a *addon.Addon, cfg config.Config, version string, spa fs
 		pending: map[string]pendingLogin{}, enrol: map[uint]string{},
 		outbox: outbox.New(gdb),
 	}
+	proxies, err := web.ParseProxies(cfg.TrustedProxies)
+	if err != nil {
+		log.Printf("%v; left out", err)
+	}
+	s.proxies = proxies
 	s.users = &users.Sync{DB: gdb, Panel: func() users.Getter {
 		if c := s.panelClient(); c != nil {
 			return c
@@ -272,7 +280,12 @@ func (s *Server) Handler() http.Handler {
 	}
 	// Everything under the base path: Notif has no page for anyone but its
 	// admins, so the root answers like a path nothing serves.
-	return securityHeaders(web.Mount(s.cfg.BasePath, mux))
+	//
+	// The trusted proxies come first, so every limit by address and the
+	// cookie's Secure flag read the visitor behind them, and a write a page
+	// on another origin sends — a sibling subdomain is the same site, which
+	// SameSite=Strict lets through — is refused before any route runs.
+	return s.proxies.Handler(web.RefuseCrossOrigin(securityHeaders(web.Mount(s.cfg.BasePath, mux))))
 }
 
 // selfSigned is whether Notif serves its address with a certificate no CA

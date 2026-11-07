@@ -64,26 +64,32 @@ type Config struct {
 	// (channel.SetLocalProxies): the operator's to allow, never the admin
 	// web's.
 	LocalProxies string
+	// TrustedProxies are the reverse proxies in front of Notif (the panel's
+	// ingress, nginx, a CDN), addresses or ranges: from one of them a
+	// request is taken to come from the address its X-Forwarded-For names.
+	// Empty, the default, trusts no header — the peer is the client.
+	TrustedProxies string
 }
 
 // Load reads the environment.
 func Load() (Config, error) {
 	c := Config{
-		Port:          option("port", "8097"),
-		BasePath:      addon.Option("base_path"),
-		PublicURL:     strings.TrimRight(strings.TrimSpace(addon.Option("public_url")), "/"),
-		HTTPS:         strings.ToLower(option("https", web.HTTPSOff)),
-		HTTPSListen:   os.Getenv("NX_HTTPS_LISTEN"),
-		HTTPListen:    env("NX_HTTP_LISTEN", ":80"),
-		ACMEDirectory: os.Getenv("NX_ACME_DIRECTORY"),
-		ACMEInsecure:  os.Getenv("NX_ACME_INSECURE") == "1",
-		DataDir:       env("NX_DATA_DIR", "data"),
-		Driver:        strings.ToLower(option("database", DriverSQLite)),
-		DSN:           strings.TrimSpace(addon.Option("database_dsn")),
-		AdminUsername: option("admin_username", "admin"),
-		AdminPassword: addon.Option("admin_password"),
-		ManifestFile:  os.Getenv("NX_MANIFEST_FILE"),
-		LocalProxies:  strings.TrimSpace(addon.Option("local_proxies")),
+		Port:           option("port", "8097"),
+		BasePath:       addon.Option("base_path"),
+		PublicURL:      strings.TrimRight(strings.TrimSpace(addon.Option("public_url")), "/"),
+		HTTPS:          strings.ToLower(option("https", web.HTTPSOff)),
+		HTTPSListen:    os.Getenv("NX_HTTPS_LISTEN"),
+		HTTPListen:     env("NX_HTTP_LISTEN", ":80"),
+		ACMEDirectory:  os.Getenv("NX_ACME_DIRECTORY"),
+		ACMEInsecure:   os.Getenv("NX_ACME_INSECURE") == "1",
+		DataDir:        env("NX_DATA_DIR", "data"),
+		Driver:         strings.ToLower(option("database", DriverSQLite)),
+		DSN:            strings.TrimSpace(addon.Option("database_dsn")),
+		AdminUsername:  option("admin_username", "admin"),
+		AdminPassword:  addon.Option("admin_password"),
+		ManifestFile:   os.Getenv("NX_MANIFEST_FILE"),
+		LocalProxies:   strings.TrimSpace(addon.Option("local_proxies")),
+		TrustedProxies: strings.TrimSpace(addon.Option("trusted_proxies")),
 	}
 	if !slices.Contains(web.HTTPSModes, c.HTTPS) {
 		return c, fmt.Errorf("https must be one of %s", strings.Join(web.HTTPSModes, ", "))
