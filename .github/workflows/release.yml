@@ -3,7 +3,9 @@
 # last, so the directory never sees a release whose image is missing. The
 # manifest must name the tag's version and carry NX's signature — signed
 # on the owner's machine (scripts/sign.sh) before the tag is pushed, since the
-# signature covers the version.
+# signature covers the version. Once this workflow is done, sign the release's
+# SHA256SUMS on the same machine: scripts/sign-sums.sh vX.Y.Z — the panel
+# installs a release by itself only when SHA256SUMS.sig is there.
 name: release
 on:
   push:

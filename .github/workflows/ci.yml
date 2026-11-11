@@ -29,7 +29,7 @@ jobs:
         run: go test -race -count=1 -p 1 ./...
       - name: the manifest is one a panel accepts
         run: go run github.com/nx-panel/addon-kit/cmd/nx-addon check nx-addon.json
-      - run: sh -n install.sh && sh -n scripts/sign.sh
+      - run: sh -n install.sh && sh -n scripts/sign.sh && sh -n scripts/sign-sums.sh
   web:
     runs-on: ubicloud-standard-2
     defaults:
