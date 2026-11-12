@@ -2,8 +2,9 @@
 # Signs a published release's SHA256SUMS with NX's addon key and uploads
 # SHA256SUMS.sig beside it. The panel installs or updates over SSH (or on
 # its own server) only a release whose install.sh and binary match checksums
-# signed by the key that signed its manifest, and the key never goes to CI —
-# so run this on the owner's machine once the release workflow is done.
+# signed by the key that signed its manifest. The release workflow's `sign`
+# job runs it after the release, with the key from the NX_SIGNING_KEY
+# secret; run it by hand, where the key is, when that job failed.
 #
 #   scripts/sign-sums.sh v0.4.3
 #
