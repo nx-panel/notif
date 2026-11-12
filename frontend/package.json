@@ -12,20 +12,20 @@
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "@primeuix/themes": "^3.1.0",
+    "@primeuix/themes": "^3.1.1",
     "primeicons": "^8.0.2",
-    "primevue": "^5.0.4",
+    "primevue": "^5.0.5",
     "qrcode.vue": "^3.11.0",
-    "vue": "^3.5.44",
-    "vue-i18n": "^11.4.16",
-    "vue-router": "^5.4.0"
+    "vue": "^3.5.45",
+    "vue-i18n": "^11.4.18",
+    "vue-router": "^5.5.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^6.0.10",
-    "oxfmt": "^0.75.0",
-    "oxlint": "^1.90.0",
+    "@vitejs/plugin-vue": "^6.0.11",
+    "oxfmt": "^0.78.0",
+    "oxlint": "^1.93.0",
     "typescript": "^6.0.3",
-    "vite": "^8.3.5",
+    "vite": "^8.3.8",
     "vue-tsc": "^3.3.14"
   },
   "engines": {
