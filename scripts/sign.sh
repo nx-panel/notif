@@ -1,7 +1,8 @@
 #!/bin/sh
 # Signs nx-addon.json. Notif is an official addon, so a release carries
-# NX's signature, made on the owner's machine only: the private key never
-# goes to CI, and the release workflow refuses a manifest NX did not sign.
+# NX's signature, made here before the tag is pushed, since it covers the
+# version; the release workflow refuses a manifest NX did not sign. (The
+# same key signs the release's SHA256SUMS in that workflow's sign job.)
 #
 #   scripts/sign.sh          sign in place with NX_ADDON_KEY
 #                            (default ../nx-panel/.secrets/addon_ed25519.key)
