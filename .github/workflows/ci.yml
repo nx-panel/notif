@@ -5,7 +5,7 @@ on:
   pull_request:
 jobs:
   go:
-    runs-on: ubicloud-standard-2
+    runs-on: ubuntu-24.04
     services:
       postgres:
         image: postgres:17-alpine
@@ -31,7 +31,7 @@ jobs:
         run: go run github.com/nx-panel/addon-kit/cmd/nx-addon check nx-addon.json
       - run: sh -n install.sh && sh -n scripts/sign.sh && sh -n scripts/sign-sums.sh
   web:
-    runs-on: ubicloud-standard-2
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: frontend
