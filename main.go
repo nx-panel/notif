@@ -35,11 +35,13 @@ import (
 	"sync"
 	"syscall"
 	"time"
+
 	// The zone database inside the binary: a host installed as a service
 	// may have none, and the quiet hours and dates are counted in a zone.
 	_ "time/tzdata"
 
 	"github.com/nx-panel/addon-kit/addon"
+
 	"github.com/nx-panel/notif/frontend"
 	"github.com/nx-panel/notif/internal/admins"
 	"github.com/nx-panel/notif/internal/api"
@@ -202,7 +204,10 @@ func run() error {
 		if onePort {
 			// The TLS server shuts down gracefully on its context.
 			select {
-			case <-errs:
+			case e := <-errs:
+				if e != nil && !errors.Is(e, http.ErrServerClosed) {
+					err = e
+				}
 			case <-time.After(11 * time.Second):
 			}
 		} else {

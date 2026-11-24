@@ -20,7 +20,7 @@ func TestChannelsTheirOrderAndATest(t *testing.T) {
 	stand := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		hits++
 		if r.Header.Get("X-Key") != "s3cret" {
-			w.WriteHeader(401)
+			w.WriteHeader(http.StatusUnauthorized)
 		}
 	}))
 	defer stand.Close()

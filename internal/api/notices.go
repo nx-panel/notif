@@ -7,11 +7,12 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"gorm.io/gorm/clause"
+
 	"github.com/nx-panel/notif/internal/channel"
 	"github.com/nx-panel/notif/internal/model"
 	"github.com/nx-panel/notif/internal/notices"
 	"github.com/nx-panel/notif/internal/settings"
-	"gorm.io/gorm/clause"
 )
 
 // The admin's notices (GN-S4): each kind on or off, urgent or not, its

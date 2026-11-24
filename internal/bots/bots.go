@@ -18,12 +18,13 @@ import (
 
 	"github.com/nx-panel/addon-kit/auth"
 	"github.com/nx-panel/addon-kit/telegram"
+	"gorm.io/gorm"
+
 	"github.com/nx-panel/notif/internal/channel"
 	"github.com/nx-panel/notif/internal/links"
 	"github.com/nx-panel/notif/internal/model"
 	"github.com/nx-panel/notif/internal/notices"
 	"github.com/nx-panel/notif/internal/settings"
-	"gorm.io/gorm"
 )
 
 // Manager runs one reader per enabled bot channel, restarting it when the

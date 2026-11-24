@@ -14,12 +14,13 @@ import (
 	"time"
 
 	"github.com/nx-panel/addon-kit/addon"
+	"gorm.io/gorm"
+
 	"github.com/nx-panel/notif/internal/channel"
 	"github.com/nx-panel/notif/internal/model"
 	"github.com/nx-panel/notif/internal/notices"
 	"github.com/nx-panel/notif/internal/outbox"
 	"github.com/nx-panel/notif/internal/settings"
-	"gorm.io/gorm"
 )
 
 // EditDelay is how long an edit's notice waits: the panel raises an event
@@ -254,7 +255,7 @@ func (w *Watch) Changed(old, nu model.User) {
 		vars["added"] = strconv.FormatInt(nu.Volume-old.Volume, 10)
 		w.raiseLogged("traffic_added", nu, fmt.Sprintf("traffic_added:%d:%s:%d", nu.ID, at, nu.Volume), vars, EditDelay)
 	}
-	if nu.Expiry != old.Expiry && nu.Expiry > 0 && !pending(nu) && !(pending(old) && nu.ActivatedAt > 0) {
+	if nu.Expiry != old.Expiry && nu.Expiry > 0 && !pending(nu) && (!pending(old) || nu.ActivatedAt <= 0) {
 		w.raiseLogged("expiry_changed", nu, fmt.Sprintf("expiry_changed:%d:%d", nu.ID, nu.Expiry), facts(nu), EditDelay)
 	}
 	if old.Used > 0 && nu.Used < old.Used/2 && nu.TotalUsed >= old.TotalUsed {

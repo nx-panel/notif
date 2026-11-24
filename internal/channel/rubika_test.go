@@ -23,7 +23,7 @@ func TestRubika(t *testing.T) {
 		}
 		_ = json.NewDecoder(r.Body).Decode(&got)
 		if status == "500" {
-			w.WriteHeader(502)
+			w.WriteHeader(http.StatusBadGateway)
 			return
 		}
 		_, _ = w.Write([]byte(`{"status":"` + status + `","dev_message":"no such chat","data":{"message_id":"9"}}`))

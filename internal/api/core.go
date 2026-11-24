@@ -9,11 +9,12 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"gorm.io/gorm"
+
 	"github.com/nx-panel/notif/internal/channel"
 	"github.com/nx-panel/notif/internal/model"
 	"github.com/nx-panel/notif/internal/notices"
 	"github.com/nx-panel/notif/internal/settings"
-	"gorm.io/gorm"
 )
 
 // The admin's routes for the core (GN-S1): the channels in their order,

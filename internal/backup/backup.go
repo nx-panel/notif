@@ -19,9 +19,10 @@ import (
 	"time"
 
 	"github.com/glebarez/sqlite"
-	"github.com/nx-panel/notif/internal/config"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
+
+	"github.com/nx-panel/notif/internal/config"
 )
 
 // Keep is how many daily copies are kept.

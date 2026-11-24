@@ -9,10 +9,11 @@ import (
 	"strings"
 	"time"
 
+	"gorm.io/gorm"
+
 	"github.com/nx-panel/notif/internal/channel"
 	"github.com/nx-panel/notif/internal/model"
 	"github.com/nx-panel/notif/internal/settings"
-	"gorm.io/gorm"
 )
 
 // The notices GN-S1 sends.

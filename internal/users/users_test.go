@@ -11,11 +11,12 @@ import (
 	"time"
 
 	"github.com/nx-panel/addon-kit/panel"
+	"gorm.io/gorm"
+
 	"github.com/nx-panel/notif/internal/config"
 	"github.com/nx-panel/notif/internal/db"
 	"github.com/nx-panel/notif/internal/model"
 	"github.com/nx-panel/notif/internal/settings"
-	"gorm.io/gorm"
 )
 
 type fake struct {

@@ -23,10 +23,11 @@ import (
 	"time"
 
 	"github.com/nx-panel/addon-kit/panel"
-	"github.com/nx-panel/notif/internal/model"
-	"github.com/nx-panel/notif/internal/users"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
+
+	"github.com/nx-panel/notif/internal/model"
+	"github.com/nx-panel/notif/internal/users"
 )
 
 // Panel is the panel as far as links need it (a *panel.Client).

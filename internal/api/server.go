@@ -21,6 +21,8 @@ import (
 	"github.com/nx-panel/addon-kit/auth"
 	"github.com/nx-panel/addon-kit/panel"
 	"github.com/nx-panel/addon-kit/web"
+	"gorm.io/gorm"
+
 	"github.com/nx-panel/notif/internal/admins"
 	"github.com/nx-panel/notif/internal/bots"
 	"github.com/nx-panel/notif/internal/channel"
@@ -31,7 +33,6 @@ import (
 	"github.com/nx-panel/notif/internal/settings"
 	"github.com/nx-panel/notif/internal/users"
 	"github.com/nx-panel/notif/internal/watch"
-	"gorm.io/gorm"
 )
 
 const sessionCookie = "nx_notif_session"

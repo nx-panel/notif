@@ -8,8 +8,9 @@ import (
 	"time"
 
 	"github.com/nx-panel/addon-kit/auth"
-	"github.com/nx-panel/notif/internal/model"
 	"gorm.io/gorm"
+
+	"github.com/nx-panel/notif/internal/model"
 )
 
 // SessionTTL is how long a sign-in lasts.

@@ -14,9 +14,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/nx-panel/notif/internal/model"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
+
+	"github.com/nx-panel/notif/internal/model"
 )
 
 // Delivery is how notices go out.

@@ -20,11 +20,12 @@ import (
 	"time"
 
 	"github.com/nx-panel/addon-kit/panel"
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
+
 	"github.com/nx-panel/notif/internal/channel"
 	"github.com/nx-panel/notif/internal/model"
 	"github.com/nx-panel/notif/internal/settings"
-	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 )
 
 // Getter is the panel, as far as the copy needs it (a *panel.Client).

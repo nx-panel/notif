@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/nx-panel/addon-kit/panel"
+
 	"github.com/nx-panel/notif/internal/model"
 )
 

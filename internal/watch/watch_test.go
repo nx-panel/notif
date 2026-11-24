@@ -7,13 +7,14 @@ import (
 	"time"
 
 	"github.com/nx-panel/addon-kit/addon"
+	"gorm.io/gorm"
+
 	"github.com/nx-panel/notif/internal/config"
 	"github.com/nx-panel/notif/internal/db"
 	"github.com/nx-panel/notif/internal/model"
 	"github.com/nx-panel/notif/internal/notices"
 	"github.com/nx-panel/notif/internal/outbox"
 	"github.com/nx-panel/notif/internal/settings"
-	"gorm.io/gorm"
 )
 
 const day = int64(86400)

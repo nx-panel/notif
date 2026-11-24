@@ -30,6 +30,18 @@ jobs:
       - name: the manifest is one a panel accepts
         run: go run github.com/nx-panel/addon-kit/cmd/nx-addon check nx-addon.json
       - run: sh -n install.sh && sh -n scripts/sign.sh && sh -n scripts/sign-sums.sh
+  golangci:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.15.0
   web:
     runs-on: ubuntu-24.04
     defaults:

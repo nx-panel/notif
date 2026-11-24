@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/nx-panel/addon-kit/web"
+
 	"github.com/nx-panel/notif/internal/config"
 	"github.com/nx-panel/notif/internal/model"
 	"github.com/nx-panel/notif/internal/settings"

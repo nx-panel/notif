@@ -1,6 +1,7 @@
 package backup
 
 import (
+	"errors"
 	"os"
 	"path/filepath"
 	"testing"
@@ -55,7 +56,7 @@ func TestACopyAndBack(t *testing.T) {
 	if err := Restore(cfg, junk); err == nil {
 		t.Fatal("a file that is not Notif's was restored")
 	}
-	if err := Snapshot(back, config.Config{Driver: config.DriverPostgres}, filepath.Join(dir, "x.db")); err != ErrPostgres {
+	if err := Snapshot(back, config.Config{Driver: config.DriverPostgres}, filepath.Join(dir, "x.db")); !errors.Is(err, ErrPostgres) {
 		t.Fatalf("postgres: %v", err)
 	}
 }

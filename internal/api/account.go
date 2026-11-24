@@ -10,6 +10,7 @@ import (
 
 	"github.com/nx-panel/addon-kit/auth"
 	"github.com/nx-panel/addon-kit/web"
+
 	"github.com/nx-panel/notif/internal/admins"
 	"github.com/nx-panel/notif/internal/model"
 )

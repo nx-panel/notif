@@ -14,13 +14,14 @@ import (
 
 	"github.com/nx-panel/addon-kit/panel"
 	"github.com/nx-panel/addon-kit/telegram"
+	"gorm.io/gorm"
+
 	"github.com/nx-panel/notif/internal/channel"
 	"github.com/nx-panel/notif/internal/config"
 	"github.com/nx-panel/notif/internal/db"
 	"github.com/nx-panel/notif/internal/links"
 	"github.com/nx-panel/notif/internal/model"
 	"github.com/nx-panel/notif/internal/users"
-	"gorm.io/gorm"
 )
 
 // TestMain lets the bots reach the stand-in APIs on 127.0.0.1, which an
@@ -47,7 +48,7 @@ func (f *fakePanel) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	id := strings.TrimPrefix(r.URL.Path, "/api/v1/users/")
 	c, ok := f.contacts[id]
 	if !ok {
-		w.WriteHeader(404)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 	if r.Method == http.MethodPatch {
@@ -62,7 +63,7 @@ func (f *fakePanel) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			f.version[id]++
 		}
 		if body.Version != f.version[id] {
-			w.WriteHeader(409)
+			w.WriteHeader(http.StatusConflict)
 			_, _ = w.Write([]byte(`{"error":"changed","version":1}`))
 			return
 		}

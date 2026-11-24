@@ -9,12 +9,13 @@ import (
 	"testing"
 	"time"
 
+	"gorm.io/gorm"
+
 	"github.com/nx-panel/notif/internal/channel"
 	"github.com/nx-panel/notif/internal/config"
 	"github.com/nx-panel/notif/internal/db"
 	"github.com/nx-panel/notif/internal/model"
 	"github.com/nx-panel/notif/internal/settings"
-	"gorm.io/gorm"
 )
 
 // stub is a channel whose answer per user the test sets: "" sends, "none"

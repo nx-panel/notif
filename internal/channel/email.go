@@ -124,7 +124,7 @@ func (c *smtpChannel) deliver(ctx context.Context, to string, msg []byte) error 
 	var err error
 	tlsCfg := &tls.Config{ServerName: c.host, MinVersion: tls.VersionTLS12}
 	if c.security == "tls" {
-		conn, err = tls.DialWithDialer(dialer, "tcp", address, tlsCfg)
+		conn, err = (&tls.Dialer{NetDialer: dialer, Config: tlsCfg}).DialContext(ctx, "tcp", address)
 	} else {
 		conn, err = dialer.DialContext(ctx, "tcp", address)
 	}

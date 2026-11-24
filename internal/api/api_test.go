@@ -12,12 +12,13 @@ import (
 
 	"github.com/nx-panel/addon-kit/addon"
 	"github.com/nx-panel/addon-kit/auth"
+	"gorm.io/gorm"
+
 	"github.com/nx-panel/notif/internal/admins"
 	"github.com/nx-panel/notif/internal/channel"
 	"github.com/nx-panel/notif/internal/config"
 	"github.com/nx-panel/notif/internal/db"
 	"github.com/nx-panel/notif/internal/model"
-	"gorm.io/gorm"
 )
 
 // TestMain lets the channels reach the stand-ins on 127.0.0.1.
@@ -104,25 +105,25 @@ func TestSigningInWithAndWithoutASecondFactor(t *testing.T) {
 	if w := call(t, h, "GET", "/api/me", ""); w.Code != http.StatusUnauthorized {
 		t.Fatalf("signed out: %d", w.Code)
 	}
-	if w := call(t, h, "POST", "/api/login", `{"username":"admin","password":"wrong one!!"}`); w.Code != http.StatusUnauthorized {
+	if w := call(t, h, http.MethodPost, "/api/login", `{"username":"admin","password":"wrong one!!"}`); w.Code != http.StatusUnauthorized {
 		t.Fatalf("a wrong password: %d", w.Code)
 	}
-	c := session(t, call(t, h, "POST", "/api/login", `{"username":"admin","password":"correct horse"}`))
+	c := session(t, call(t, h, http.MethodPost, "/api/login", `{"username":"admin","password":"correct horse"}`))
 	if w := call(t, h, "GET", "/api/me", "", c); w.Code != http.StatusOK || !strings.Contains(w.Body.String(), `"username":"admin"`) {
 		t.Fatalf("me: %d %s", w.Code, w.Body)
 	}
 
-	w := call(t, h, "POST", "/api/me/2fa/totp", "", c)
+	w := call(t, h, http.MethodPost, "/api/me/2fa/totp", "", c)
 	var enrol struct{ Secret, URI string }
 	_ = json.Unmarshal(w.Body.Bytes(), &enrol)
 	if w.Code != http.StatusOK || !strings.HasPrefix(enrol.URI, "otpauth://totp/NX%20Notif:admin") {
 		t.Fatalf("enrol: %d %s", w.Code, w.Body)
 	}
-	if w := call(t, h, "POST", "/api/me/2fa/totp/confirm", `{"code":"`+auth.TOTPCode(enrol.Secret, time.Now())+`"}`, c); w.Code != http.StatusNoContent {
+	if w := call(t, h, http.MethodPost, "/api/me/2fa/totp/confirm", `{"code":"`+auth.TOTPCode(enrol.Secret, time.Now())+`"}`, c); w.Code != http.StatusNoContent {
 		t.Fatalf("confirm: %d %s", w.Code, w.Body)
 	}
 
-	w = call(t, h, "POST", "/api/login", `{"username":"admin","password":"correct horse"}`)
+	w = call(t, h, http.MethodPost, "/api/login", `{"username":"admin","password":"correct horse"}`)
 	var pending struct {
 		MFA   bool
 		Token string
@@ -135,10 +136,10 @@ func TestSigningInWithAndWithoutASecondFactor(t *testing.T) {
 	auth.ClockOffset = 30 * time.Second
 	defer func() { auth.ClockOffset = 0 }()
 	code := auth.TOTPCode(enrol.Secret, auth.Now())
-	c2 := session(t, call(t, h, "POST", "/api/login/mfa", `{"token":"`+pending.Token+`","code":"`+code+`"}`))
-	w = call(t, h, "POST", "/api/login", `{"username":"admin","password":"correct horse"}`)
+	c2 := session(t, call(t, h, http.MethodPost, "/api/login/mfa", `{"token":"`+pending.Token+`","code":"`+code+`"}`))
+	w = call(t, h, http.MethodPost, "/api/login", `{"username":"admin","password":"correct horse"}`)
 	_ = json.Unmarshal(w.Body.Bytes(), &pending)
-	if w := call(t, h, "POST", "/api/login/mfa", `{"token":"`+pending.Token+`","code":"`+code+`"}`); w.Code != http.StatusUnauthorized {
+	if w := call(t, h, http.MethodPost, "/api/login/mfa", `{"token":"`+pending.Token+`","code":"`+code+`"}`); w.Code != http.StatusUnauthorized {
 		t.Fatalf("a code was taken twice: %d", w.Code)
 	}
 	if w := call(t, h, "DELETE", "/api/me/2fa", `{"password":"wrong one!!"}`, c2); w.Code != http.StatusForbidden {
@@ -154,9 +155,9 @@ func TestSigningInWithAndWithoutASecondFactor(t *testing.T) {
 func TestFailedSignInsLockTheAddressOut(t *testing.T) {
 	_, _, h := newServer(t)
 	for range 5 {
-		call(t, h, "POST", "/api/login", `{"username":"admin","password":"wrong one!!"}`)
+		call(t, h, http.MethodPost, "/api/login", `{"username":"admin","password":"wrong one!!"}`)
 	}
-	if w := call(t, h, "POST", "/api/login", `{"username":"admin","password":"correct horse"}`); w.Code != http.StatusTooManyRequests {
+	if w := call(t, h, http.MethodPost, "/api/login", `{"username":"admin","password":"correct horse"}`); w.Code != http.StatusTooManyRequests {
 		t.Fatalf("after five failures: %d", w.Code)
 	}
 }
@@ -165,8 +166,8 @@ func TestFailedSignInsLockTheAddressOut(t *testing.T) {
 func TestAChangedPasswordEndsTheOtherSessions(t *testing.T) {
 	_, _, h := newServer(t)
 	login := `{"username":"admin","password":"correct horse"}`
-	a := session(t, call(t, h, "POST", "/api/login", login))
-	b := session(t, call(t, h, "POST", "/api/login", login))
+	a := session(t, call(t, h, http.MethodPost, "/api/login", login))
+	b := session(t, call(t, h, http.MethodPost, "/api/login", login))
 	if w := call(t, h, "PUT", "/api/me/password", `{"current":"correct horse","new":"short"}`, a); w.Code != http.StatusBadRequest {
 		t.Fatalf("a short password: %d", w.Code)
 	}
@@ -182,7 +183,7 @@ func TestAChangedPasswordEndsTheOtherSessions(t *testing.T) {
 // before a panel registered it, the manifest, and the health path.
 func TestUnregisteredItShowsItsClaimCodeAndIsHealthy(t *testing.T) {
 	_, _, h := newServer(t)
-	c := session(t, call(t, h, "POST", "/api/login", `{"username":"admin","password":"correct horse"}`))
+	c := session(t, call(t, h, http.MethodPost, "/api/login", `{"username":"admin","password":"correct horse"}`))
 	w := call(t, h, "GET", "/api/status", "", c)
 	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), `"claimCode":"TEST-CLAIM"`) {
 		t.Fatalf("status: %d %s", w.Code, w.Body)
@@ -222,7 +223,7 @@ func TestGuessesAtOnceAreCounted(t *testing.T) {
 			if i%2 == 0 {
 				user = "nobody"
 			}
-			w := call(t, h, "POST", "/api/login", `{"username":"`+user+`","password":"wrong one!!"}`)
+			w := call(t, h, http.MethodPost, "/api/login", `{"username":"`+user+`","password":"wrong one!!"}`)
 			mu.Lock()
 			codes[w.Code]++
 			mu.Unlock()
@@ -232,7 +233,7 @@ func TestGuessesAtOnceAreCounted(t *testing.T) {
 	if codes[http.StatusUnauthorized] > 5 || codes[http.StatusUnauthorized]+codes[http.StatusTooManyRequests] != 12 {
 		t.Fatalf("answers %v", codes)
 	}
-	w := call(t, h, "POST", "/api/login", `{"username":"admin","password":"correct horse"}`)
+	w := call(t, h, http.MethodPost, "/api/login", `{"username":"admin","password":"correct horse"}`)
 	if !strings.Contains(w.Body.String(), `"code":"too_many_attempts"`) {
 		t.Fatalf("locked out: %s", w.Body)
 	}
@@ -244,7 +245,7 @@ func TestGuessesAtOnceAreCounted(t *testing.T) {
 func TestTheCookieStaysOnHTTPS(t *testing.T) {
 	_, _, h := newServer(t)
 	login := func(origin string) *http.Cookie {
-		r := httptest.NewRequest("POST", "/api/login", strings.NewReader(`{"username":"admin","password":"correct horse"}`))
+		r := httptest.NewRequest(http.MethodPost, "/api/login", strings.NewReader(`{"username":"admin","password":"correct horse"}`))
 		r.RemoteAddr = "192.0.2.8:4000"
 		if origin != "" {
 			// What a browser sends from Notif's own page.
@@ -285,7 +286,7 @@ func TestAnotherPanelForgetsTheCopy(t *testing.T) {
 func TestBehindATrustedProxyEachVisitorIsCountedApart(t *testing.T) {
 	_, _, h := newServerWith(t, func(c *config.Config) { c.TrustedProxies = "127.0.0.1" })
 	login := func(client, password string) int {
-		r := httptest.NewRequest("POST", "/api/login", strings.NewReader(`{"username":"admin","password":"`+password+`"}`))
+		r := httptest.NewRequest(http.MethodPost, "/api/login", strings.NewReader(`{"username":"admin","password":"`+password+`"}`))
 		r.RemoteAddr = "127.0.0.1:4000"
 		r.Header.Set("X-Forwarded-For", client)
 		w := httptest.NewRecorder()
@@ -308,9 +309,9 @@ func TestBehindATrustedProxyEachVisitorIsCountedApart(t *testing.T) {
 // which is the same site; its write is refused.
 func TestAPageOnASiblingSubdomainCannotAct(t *testing.T) {
 	_, _, h := newServer(t)
-	c := session(t, call(t, h, "POST", "/api/login", `{"username":"admin","password":"correct horse"}`))
+	c := session(t, call(t, h, http.MethodPost, "/api/login", `{"username":"admin","password":"correct horse"}`))
 	write := func(site string) int {
-		r := httptest.NewRequest("POST", "/api/me/2fa/totp", strings.NewReader(`{}`))
+		r := httptest.NewRequest(http.MethodPost, "/api/me/2fa/totp", strings.NewReader(`{}`))
 		r.RemoteAddr = "192.0.2.7:4000"
 		r.Header.Set("Content-Type", "text/plain")
 		if site != "" {

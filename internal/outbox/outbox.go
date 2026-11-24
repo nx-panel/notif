@@ -29,12 +29,13 @@ import (
 	"sync"
 	"time"
 
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
+
 	"github.com/nx-panel/notif/internal/channel"
 	"github.com/nx-panel/notif/internal/model"
 	"github.com/nx-panel/notif/internal/notices"
 	"github.com/nx-panel/notif/internal/settings"
-	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 )
 
 // Tries is how often one channel is tried for one delivery before the next
