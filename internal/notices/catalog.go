@@ -1,10 +1,10 @@
 package notices
 
-// The notices Notif sends (GN-S4), in three families: what an event of the
+// The notices Notif sends, in three families: what an event of the
 // panel's says happened, what a read of the account found an admin changed,
 // and what the admin's own schedule says is coming. Each is on or off, and
 // its words are the admin's, per language and per channel kind, over these
-// defaults — strictly transactional: no price, no offer, no word VPN (P40).
+// defaults — strictly transactional: no price, no offer, no word VPN.
 
 // Def is one kind of notice.
 type Def struct {

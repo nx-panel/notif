@@ -16,7 +16,7 @@ import (
 	"unicode/utf8"
 )
 
-// The named SMS providers (P37 (a)): Kavenegar and Faraz SMS, both by an
+// The named SMS providers: Kavenegar and Faraz SMS, both by an
 // approved template ("lookup" / "pattern") on a service line, which reaches
 // numbers that block advertising SMS. The admin maps the template's
 // variables to Notif's — one line each, token={name} — and the text of the

@@ -15,7 +15,7 @@ import (
 	"github.com/nx-panel/notif/internal/settings"
 )
 
-// Set-up (docs/phase-g.md GN-S7, P44 (b)): the checklist the admin web
+// Set-up: the checklist the admin web
 // shows until Notif is ready — its address and certificate, checked from
 // outside; the admin's own password and second factor; the first channel;
 // the panel's registration; the backups — each with what to do next.
@@ -111,8 +111,7 @@ func (s *Server) handleSetup(w http.ResponseWriter, _ *http.Request, a model.Adm
 	}
 	// What the panel's install did — the address and its HTTPS, the
 	// registration, the install's password — is listed only while it is
-	// wrong (docs/phase-h.md P11 in the panel's repository): the list is
-	// Notif's own work.
+	// wrong: the list is Notif's own work.
 	v.Steps = []setupStep{}
 	for _, st := range steps {
 		if st.Done && (st.Key == "address" || st.Key == "panel" || st.Key == "password") {

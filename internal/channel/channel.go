@@ -16,7 +16,7 @@ import (
 )
 
 // Recipient is the user a notice goes to: the panel account and its
-// contact card, where every messenger link is kept (P36 (iii)).
+// contact card, where every messenger link is kept.
 type Recipient struct {
 	UserID  uint
 	Name    string
@@ -109,7 +109,7 @@ type Preset struct {
 	Name   string            `json:"name"`
 	Config map[string]string `json:"config"`
 	// Market is where the provider serves: "ir", "ru", "cn" or "" for
-	// anywhere (P40).
+	// anywhere.
 	Market string `json:"market,omitempty"`
 }
 

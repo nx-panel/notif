@@ -1,6 +1,6 @@
 package notices
 
-// What a bot answers a user who writes to it (GN-S2), per language.
+// What a bot answers a user who writes to it, per language.
 var botTexts = map[string]map[string]string{
 	"welcome": {
 		"en": "Hello! Send me your subscription link, or the link code you were given, and I will tell you here about your account: its expiry, its traffic and any change to it.",

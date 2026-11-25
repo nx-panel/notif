@@ -14,7 +14,7 @@ import (
 	"github.com/nx-panel/notif/internal/settings"
 )
 
-// TestEverythingLivesUnderTheBasePath (GN-S7, P43 (b)): with a base path
+// TestEverythingLivesUnderTheBasePath: with a base path
 // the admin web, its API, the panel's routes and the address check answer
 // only under it, and the root — Notif has no other page — answers like
 // nothing is there. The admin's cookie keeps to the base path's tree.
@@ -39,12 +39,12 @@ func TestEverythingLivesUnderTheBasePath(t *testing.T) {
 	}
 }
 
-// TestTheSetUpChecklist (GN-S7, P44 (b)): each step done or not from what
+// TestTheSetUpChecklist: each step done or not from what
 // Notif holds — the address, a password of the admin's own rather than the
 // install's, the second factor, a channel on, the panel's registration —
 // and the address check finds this Notif under its base path, over a
 // self-signed certificate too, and not another program. What the panel's
-// install did is listed only while it is wrong (the panel's P11): an
+// install did is listed only while it is wrong, as on the panel: an
 // address over HTTPS and a password of the admin's own drop out.
 func TestTheSetUpChecklist(t *testing.T) {
 	s, gdb, h := newServerWith(t, func(c *config.Config) {

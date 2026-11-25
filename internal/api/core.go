@@ -17,7 +17,7 @@ import (
 	"github.com/nx-panel/notif/internal/settings"
 )
 
-// The admin's routes for the core (GN-S1): the channels in their order,
+// The admin's routes for the core: the channels in their order,
 // the delivery log, the delivery settings, a test, and the dashboard's
 // figures.
 

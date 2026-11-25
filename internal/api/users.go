@@ -10,7 +10,7 @@ import (
 	"github.com/nx-panel/notif/internal/model"
 )
 
-// The admin's view of the accounts as Notif knows them (GN-S2): who is
+// The admin's view of the accounts as Notif knows them: who is
 // reachable where, the link code a user sends a bot, and taking a link away.
 
 func (s *Server) mountUsers(mux *http.ServeMux) {

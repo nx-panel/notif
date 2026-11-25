@@ -225,7 +225,7 @@ func SetOffsetText(gdb *gorm.DB, channelID uint, v string) error {
 }
 
 // Schedule is the admin's own timing for the notices nobody's event
-// raises (GN-S4): how many days before the expiry, and at what share of
+// raises: how many days before the expiry, and at what share of
 // the traffic, a user hears. Each line is said once and re-arms itself: a
 // renewal moves the expiry, a top-up or a new cycle moves the traffic.
 type Schedule struct {

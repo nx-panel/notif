@@ -1,10 +1,10 @@
 // Package model is Notif's own database. Nothing here is the panel's: the
 // accounts are read from the panel with the addon's token, and only what
 // Notif itself decides — its admins, the panel it is registered with, and
-// (from GN-S1 on) its channels, notices and deliveries — is kept.
+// its channels, notices and deliveries — is kept.
 package model
 
-// Admin is someone who signs in to Notif's admin web. P35 (a): the main
+// Admin is someone who signs in to Notif's admin web: the main
 // admin only, for now; every send will name an owner so resellers can be
 // added without a migration.
 type Admin struct {

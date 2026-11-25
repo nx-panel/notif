@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-// ntfy (P39 (a)): a push app the user installs, subscribed to a topic of
+// ntfy: a push app the user installs, subscribed to a topic of
 // their own. The topic is the secret — anyone who knows it reads it — so
 // Notif draws it from its own secret and the account (links.NtfyTopic) and
 // keeps it, like every link, in the account's contact card as "ntfy": the

@@ -1,6 +1,5 @@
 // Command notif is NX Notif, the official open addon that tells a
-// panel's users about their accounts (nx-panel docs/phase-g.md, track
-// GN): the configuration, the database (SQLite, or PostgreSQL by the
+// panel's users about their accounts: the configuration, the database (SQLite, or PostgreSQL by the
 // install's choice), its own admins with a TOTP second factor, the manifest,
 // the claim-code registration and the health path, the copy of the panel's
 // accounts (internal/users) and the outbox that sends (internal/outbox).
@@ -171,8 +170,8 @@ func run() error {
 		where = "under " + cfg.BasePath + "/"
 	}
 	log.Printf("nx notif %s on %s (%s), %s", a.Manifest().Version, cfg.Addr(), cfg.Driver, where)
-	// With HTTPS on, the port is the HTTPS one and nothing plain listens
-	// (P9); an older install keeps HTTPS beside it.
+	// With HTTPS on, the port is the HTTPS one and nothing plain listens;
+	// an older install keeps HTTPS beside it.
 	httpsCtx, stopHTTPS := context.WithCancel(context.Background())
 	defer stopHTTPS()
 	errs := make(chan error, 1)

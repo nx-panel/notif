@@ -15,7 +15,7 @@ import (
 	"github.com/nx-panel/notif/internal/settings"
 )
 
-// The admin's notices (GN-S4): each kind on or off, urgent or not, its
+// The admin's notices: each kind on or off, urgent or not, its
 // words per language and channel kind; the schedule; a preview.
 
 func (s *Server) mountNotices(mux *http.ServeMux) {

@@ -20,7 +20,7 @@ import (
 	"time"
 )
 
-// The generic HTTP channel (P32, P39, P40): any provider with an HTTP API,
+// The generic HTTP channel: any provider with an HTTP API,
 // set up as an address, a method, headers and a body, each a template over
 // the notice — the way an SMS provider of the operator's choosing, a
 // WhatsApp intermediary, LINE, Matrix, Pushover or VK are reached without a

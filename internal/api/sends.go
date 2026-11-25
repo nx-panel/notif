@@ -18,7 +18,7 @@ import (
 	"github.com/nx-panel/notif/internal/watch"
 )
 
-// The admin's own messages (GN-S5): to one account or to a group the
+// The admin's own messages: to one account or to a group the
 // panel's own filters pick, counted before they go — per channel, with
 // what SMS will carry — then queued once per account, sent at the
 // channels' rates, cancellable, and reported.

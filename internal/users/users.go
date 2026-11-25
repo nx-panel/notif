@@ -1,6 +1,6 @@
 // Package users keeps Notif's copy of the panel's accounts: everything a
 // notice needs (name, contact card, expiry, traffic, owner, group), read
-// with the addon's token. The panel stays the record (G-D1): the copy is
+// with the addon's token. The panel stays the record: the copy is
 // refreshed by a full read every ten minutes — the only read that sees
 // traffic used, since usage does not touch updated_at — by
 // `updated_since` every minute for edits, and at once for an account an
@@ -41,7 +41,7 @@ type Sync struct {
 	Panel func() Getter
 	Now   func() time.Time
 	// Changed hears an account the copy already had, as a read found it —
-	// an edit nobody sent an event for (P36 (i)), or one an event's own
+	// an edit nobody sent an event for, or one an event's own
 	// read sees; the event then cancels the edit notices it tells itself.
 	Changed func(old, new model.User)
 

@@ -41,7 +41,7 @@ type Config struct {
 	// acme — a certificate from an ACME CA for its domain, acme-http
 	// answering the CA on port 80 (HTTPListen) as well; or self-signed, for
 	// an address by IP. With it on, Notif's one port (Port) serves HTTPS and
-	// nothing plain (docs/phase-h.md P9 in the panel's repository).
+	// nothing plain.
 	// HTTPSListen is set only by an install from before that, which keeps
 	// HTTPS on a listener of its own beside the plain one. ACMEDirectory and
 	// ACMEInsecure point a walk at a test CA.

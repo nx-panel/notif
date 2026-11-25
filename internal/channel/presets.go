@@ -1,6 +1,6 @@
 package channel
 
-// The generic channel's presets (P39 (a), P40 (a)): providers whose API
+// The generic channel's presets: providers whose API
 // fits one request, read from their documentation on 2026-10-04. The
 // admin's own values — a sender name, a homeserver — are written in
 // capitals; the provider's key goes in the secret field, which the

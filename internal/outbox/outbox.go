@@ -1,5 +1,5 @@
 // Package outbox sends the deliveries: one notice to one user, handed to
-// the user's channels in the admin's order until one delivers it (P32).
+// the user's channels in the admin's order until one delivers it.
 //
 // The promises it keeps:
 //   - Once. A delivery's key is unique, so the same occasion is queued once;

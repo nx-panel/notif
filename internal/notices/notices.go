@@ -1,7 +1,6 @@
 // Package notices turns a delivery into the words a user reads, in their
-// language, for the channel it goes through. GN-S1 knows two notices — a
-// channel test and the admin's own message; GN-S4 adds the account's
-// notices with the admin's own texts.
+// language, for the channel it goes through: a channel test, the admin's
+// own message, and the account's notices with the admin's own texts.
 package notices
 
 import (
@@ -16,7 +15,7 @@ import (
 	"github.com/nx-panel/notif/internal/settings"
 )
 
-// The notices GN-S1 sends.
+// The channel test and the admin's own message.
 const (
 	KindTest   = "test"
 	KindCustom = "custom"

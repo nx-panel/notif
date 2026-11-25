@@ -19,9 +19,9 @@ import (
 	"time"
 )
 
-// Email (P33): an SMTP server of the operator's. In Russia's whitelist mode
+// Email: an SMTP server of the operator's. In Russia's whitelist mode
 // and in China with the VPN off it is the one channel that still reaches a
-// customer (P40), so the message is plain and transactional: UTF-8 text,
+// customer, so the message is plain and transactional: UTF-8 text,
 // quoted-printable, a Message-ID on the sender's own domain.
 
 func init() {

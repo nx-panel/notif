@@ -6,7 +6,7 @@ package model
 
 // User is Notif's copy of one panel account — only what a notice needs.
 // The panel stays the record: the copy is refreshed from it (internal/users)
-// and every messenger link is read from Contact (P36 (iii)), never kept here.
+// and every messenger link is read from Contact, never kept here.
 type User struct {
 	ID      uint                    `json:"id" gorm:"primaryKey;autoIncrement:false"`
 	Name    string                  `json:"name" gorm:"index;not null"`
@@ -105,7 +105,7 @@ type Delivery struct {
 	Body  string `json:"body" gorm:"type:text;not null;default:''"`
 	// Urgent goes out during the quiet hours too.
 	Urgent bool `json:"urgent" gorm:"not null;default:false"`
-	// OwnerID is the admin it is sent for — 0, the panel, for now (P35).
+	// OwnerID is the admin it is sent for — 0, the panel, for now.
 	OwnerID uint `json:"ownerId" gorm:"index;not null;default:0"`
 	// SendID is the admin's message this delivery belongs to, 0 for none.
 	SendID uint `json:"sendId" gorm:"index;not null;default:0"`
@@ -141,7 +141,7 @@ type Attempt struct {
 	Detail     string `json:"detail" gorm:"type:text;not null;default:''"`
 }
 
-// Send is an admin's own message to one user or a group (GN-S5): its
+// Send is an admin's own message to one user or a group: its
 // deliveries carry its id.
 type Send struct {
 	ID      uint                    `json:"id" gorm:"primaryKey"`

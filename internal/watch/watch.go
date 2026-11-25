@@ -1,4 +1,4 @@
-// Package watch decides when a user hears something (GN-S4): from the
+// Package watch decides when a user hears something: from the
 // panel's events, from edits a read of the account finds, and from the
 // admin's own schedule of expiry and traffic notices. It only decides — it
 // queues deliveries, each once by its key, and the outbox sends them.

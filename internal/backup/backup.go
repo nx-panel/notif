@@ -1,5 +1,4 @@
-// Package backup is Notif's own backup (P16 (a): an addon backs itself
-// up). On SQLite: a consistent copy of the database once a day in
+// Package backup is Notif's own backup (an addon backs itself up). On SQLite: a consistent copy of the database once a day in
 // <data>/backups, the last seven kept, and `notif backup` / `notif restore`
 // for a copy taken or put back by hand. On PostgreSQL the database is the
 // operator's, and so is its backup: pg_dump, which a copy here would only

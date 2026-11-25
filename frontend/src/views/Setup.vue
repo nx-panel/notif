@@ -7,7 +7,7 @@ import Message from 'primevue/message'
 import Tag from 'primevue/tag'
 import { api, type Setup, type SetupStep } from '../api'
 
-// Set-up (GN-S7): every step a card, in order, each saying what to do next
+// Set-up: every step a card, in order, each saying what to do next
 // — the address and its certificate, checked from outside; the admin's own
 // password and second factor; the first channel; the panel; the backups.
 // What the panel's install did is listed only while it is wrong.
@@ -22,7 +22,7 @@ const checked = ref<{ reachable: boolean; error?: string }>()
 const example = 'https://notif.example.com'
 
 const left = computed(() => board.value?.steps.filter((s) => !s.done && !s.optional).length ?? 0)
-// The address step is listed only while it is wrong (the panel's P11); the
+// The address step is listed only while it is wrong, as on the panel; the
 // fingerprint of a self-signed certificate stays in sight without it, for
 // the panel's consent to be compared with.
 // Checked here, it stays in sight once right, with what the check found.

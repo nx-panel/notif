@@ -6,7 +6,7 @@
 # job runs it after the release, with the key from the NX_SIGNING_KEY
 # secret; run it by hand, where the key is, when that job failed.
 #
-#   scripts/sign-sums.sh v0.4.3
+#   NX_ADDON_KEY=<key file> scripts/sign-sums.sh v0.4.3
 #
 # Before signing it downloads every asset and refuses unless each one matches
 # SHA256SUMS, SHA256SUMS lists every asset, and the release's nx-addon.json
@@ -16,7 +16,7 @@ set -eu
 cd "$(dirname "$0")/.."
 REPO="${NX_RELEASE_REPO:-nx-panel/notif}"
 TAG="${1:?usage: scripts/sign-sums.sh vX.Y.Z}"
-KEY="${NX_ADDON_KEY:-../nx-panel/.secrets/addon_ed25519.key}"
+KEY="${NX_ADDON_KEY:?set NX_ADDON_KEY to the path of the NX addon key}"
 kit() { go run github.com/nx-panel/addon-kit/cmd/nx-addon "$@"; }
 sums() { if command -v sha256sum >/dev/null; then sha256sum "$@"; else shasum -a 256 "$@"; fi; }
 fail() { echo "sign-sums: $*" >&2; exit 1; }

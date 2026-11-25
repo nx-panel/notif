@@ -13,10 +13,10 @@ import (
 	"github.com/nx-panel/addon-kit/telegram"
 )
 
-// The bots (P33, P38): Telegram, Bale and Soroush Plus speak one Bot API,
+// The bots: Telegram, Bale and Soroush Plus speak one Bot API,
 // so one adapter serves the three at their own addresses. A bot writes only
 // to a chat that has started it; the chat id is the user's link, kept on
-// the panel in the contact key the kind names (P36 (iii)).
+// the panel in the contact key the kind names.
 //
 // Bale renders every text as its own Markdown and takes no parse_mode; it
 // also limits how fast a bot may write to users who are not talking to it,

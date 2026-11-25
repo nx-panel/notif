@@ -13,7 +13,7 @@ import (
 	"unicode/utf16"
 )
 
-// Rubika (P38 (b), GN-S2b): its own Bot API v3, not Telegram's —
+// Rubika: its own Bot API v3, not Telegram's —
 // https://botapi.rubika.ir/v3/{token}/{method}, every call a JSON POST
 // answered as {"status": "OK", "data": {...}}. Formatting is not markup
 // but metadata: parts of the text marked Bold, Italic… by UTF-16 offset.

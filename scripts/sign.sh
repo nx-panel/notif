@@ -4,8 +4,7 @@
 # version; the release workflow refuses a manifest NX did not sign. (The
 # same key signs the release's SHA256SUMS in that workflow's sign job.)
 #
-#   scripts/sign.sh          sign in place with NX_ADDON_KEY
-#                            (default ../nx-panel/.secrets/addon_ed25519.key)
+#   scripts/sign.sh          sign in place with the key file NX_ADDON_KEY names
 #   scripts/sign.sh -dev     write signed.json with the development key, for a
 #                            panel built with -tags addondev:
 #                            NX_MANIFEST_FILE=signed.json go run .
@@ -22,7 +21,7 @@ if [ "${1:-}" = "-dev" ]; then
 	exit 0
 fi
 
-KEY="${NX_ADDON_KEY:-../nx-panel/.secrets/addon_ed25519.key}"
+KEY="${NX_ADDON_KEY:?set NX_ADDON_KEY to the path of the NX addon key}"
 [ -f "$KEY" ] || { echo "sign: no key at $KEY (set NX_ADDON_KEY)" >&2; exit 1; }
 tmp="$(mktemp)"
 trap 'rm -f "$tmp"' EXIT

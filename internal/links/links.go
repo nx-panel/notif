@@ -1,6 +1,6 @@
 // Package links ties a user's messenger chats to their panel account. The
 // link itself is a key of the account's contact card on the panel —
-// telegram_id, bale_id, soroush_id, rubika_id (P36 (iii), G-D1) — so the
+// telegram_id, bale_id, soroush_id, rubika_id — so the
 // panel stays the one record and every addon reads it. A user proves which
 // account is theirs by sending a bot their subscription link, or a link
 // code the admin handed them. Notif remembers which keys it wrote
