@@ -1,8 +1,9 @@
-// Command notif is NX Notif, the official open addon that tells a
-// panel's users about their accounts: the configuration, the database (SQLite, or PostgreSQL by the
-// install's choice), its own admins with a TOTP second factor, the manifest,
-// the claim-code registration and the health path, the copy of the panel's
-// accounts (internal/users) and the outbox that sends (internal/outbox).
+// Command notif is NX Notif, the official open addon that tells a panel's
+// users about their accounts: the configuration, the database (SQLite, or
+// PostgreSQL by the install's choice), its own admins with a TOTP second
+// factor, the manifest, the claim-code registration and the health path,
+// the copy of the panel's accounts (internal/users) and the outbox that
+// sends (internal/outbox).
 //
 //	notif                                    serve (the default)
 //	notif admin reset-password -user U -pass P

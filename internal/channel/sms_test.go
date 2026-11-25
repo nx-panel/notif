@@ -39,7 +39,7 @@ func TestKavenegar(t *testing.T) {
 	k, _ := Lookup("kavenegar")
 	s, _ := k.New(cfg)
 	to := Recipient{Contact: map[string]string{"phone": "+98 912 000 0001"}}
-	m := Message{Title: "حساب شما به زودی تمام می‌شود", Vars: map[string]string{"name": "ana user", "days": "3"}}
+	m := Message{Title: "حساب شما به زودی تمام می\u200cشود", Vars: map[string]string{"name": "ana user", "days": "3"}}
 	if err := s.Send(context.Background(), to, m); err != nil {
 		t.Fatal(err)
 	}

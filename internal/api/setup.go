@@ -15,10 +15,10 @@ import (
 	"github.com/nx-panel/notif/internal/settings"
 )
 
-// Set-up: the checklist the admin web
-// shows until Notif is ready — its address and certificate, checked from
-// outside; the admin's own password and second factor; the first channel;
-// the panel's registration; the backups — each with what to do next.
+// Set-up: the checklist the admin web shows until Notif is ready — its
+// address and certificate, checked from outside; the admin's own password
+// and second factor; the first channel; the panel's registration; the
+// backups — each with what to do next.
 
 // whoAmIPath is where Notif answers its instance name, under the base path
 // like everything else: the address check asks the public address for it.

@@ -277,11 +277,11 @@ if [ "$FRESH" = 1 ] && ! grep -q '^NX_OPT_BASE_PATH=' "$ENVF"; then
 fi
 
 # With HTTPS on, Notif's port is its HTTPS port and nothing plain listens
-# (one address, as on the panel): the public
-# address names that port (443 when it names none). acme answers the CA on
-# it, so it is 443; acme-http answers the CA on port 80 as well, which
-# compose publishes only then. An update of an install from before keeps
-# its two ports: HTTPS on a listener of its own beside the plain one.
+# (one address, as on the panel): the public address names that port (443
+# when it names none). acme answers the CA on it, so it is 443; acme-http
+# answers the CA on port 80 as well, which compose publishes only then. An
+# update of an install from before keeps its two ports: HTTPS on a listener
+# of its own beside the plain one.
 HTTPS_MODE="$(getenv NX_OPT_HTTPS)"
 PORT_NOW="$(getenv NX_OPT_PORT)"
 PORT_NOW="${PORT_NOW:-8097}"

@@ -14,10 +14,10 @@ import (
 	"github.com/nx-panel/notif/internal/settings"
 )
 
-// TestEverythingLivesUnderTheBasePath: with a base path
-// the admin web, its API, the panel's routes and the address check answer
-// only under it, and the root — Notif has no other page — answers like
-// nothing is there. The admin's cookie keeps to the base path's tree.
+// TestEverythingLivesUnderTheBasePath: with a base path the admin web, its
+// API, the panel's routes and the address check answer only under it, and
+// the root — Notif has no other page — answers like nothing is there. The
+// admin's cookie keeps to the base path's tree.
 func TestEverythingLivesUnderTheBasePath(t *testing.T) {
 	_, _, h := newServerWith(t, func(c *config.Config) { c.BasePath = "/q7w2" })
 	for _, p := range []string{"/", "/api/me", "/api/setup", "/health", "/.well-known/nx-addon.json", "/nx/setup", whoAmIPath, "/channels", "/q7w"} {
@@ -39,13 +39,13 @@ func TestEverythingLivesUnderTheBasePath(t *testing.T) {
 	}
 }
 
-// TestTheSetUpChecklist: each step done or not from what
-// Notif holds — the address, a password of the admin's own rather than the
-// install's, the second factor, a channel on, the panel's registration —
-// and the address check finds this Notif under its base path, over a
-// self-signed certificate too, and not another program. What the panel's
-// install did is listed only while it is wrong, as on the panel: an
-// address over HTTPS and a password of the admin's own drop out.
+// TestTheSetUpChecklist: each step done or not from what Notif holds — the
+// address, a password of the admin's own rather than the install's, the
+// second factor, a channel on, the panel's registration — and the address
+// check finds this Notif under its base path, over a self-signed
+// certificate too, and not another program. What the panel's install did
+// is listed only while it is wrong, as on the panel: an address over HTTPS
+// and a password of the admin's own drop out.
 func TestTheSetUpChecklist(t *testing.T) {
 	s, gdb, h := newServerWith(t, func(c *config.Config) {
 		c.BasePath, c.AdminPassword, c.PublicURL = "/q7w2", "correct horse", "https://203.0.113.9:8443"

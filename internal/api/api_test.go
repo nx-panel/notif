@@ -102,14 +102,14 @@ func session(t *testing.T, w *httptest.ResponseRecorder) *http.Cookie {
 // and the second factor goes off only with the password.
 func TestSigningInWithAndWithoutASecondFactor(t *testing.T) {
 	_, _, h := newServer(t)
-	if w := call(t, h, "GET", "/api/me", ""); w.Code != http.StatusUnauthorized {
+	if w := call(t, h, http.MethodGet, "/api/me", ""); w.Code != http.StatusUnauthorized {
 		t.Fatalf("signed out: %d", w.Code)
 	}
 	if w := call(t, h, http.MethodPost, "/api/login", `{"username":"admin","password":"wrong one!!"}`); w.Code != http.StatusUnauthorized {
 		t.Fatalf("a wrong password: %d", w.Code)
 	}
 	c := session(t, call(t, h, http.MethodPost, "/api/login", `{"username":"admin","password":"correct horse"}`))
-	if w := call(t, h, "GET", "/api/me", "", c); w.Code != http.StatusOK || !strings.Contains(w.Body.String(), `"username":"admin"`) {
+	if w := call(t, h, http.MethodGet, "/api/me", "", c); w.Code != http.StatusOK || !strings.Contains(w.Body.String(), `"username":"admin"`) {
 		t.Fatalf("me: %d %s", w.Code, w.Body)
 	}
 
@@ -142,10 +142,10 @@ func TestSigningInWithAndWithoutASecondFactor(t *testing.T) {
 	if w := call(t, h, http.MethodPost, "/api/login/mfa", `{"token":"`+pending.Token+`","code":"`+code+`"}`); w.Code != http.StatusUnauthorized {
 		t.Fatalf("a code was taken twice: %d", w.Code)
 	}
-	if w := call(t, h, "DELETE", "/api/me/2fa", `{"password":"wrong one!!"}`, c2); w.Code != http.StatusForbidden {
+	if w := call(t, h, http.MethodDelete, "/api/me/2fa", `{"password":"wrong one!!"}`, c2); w.Code != http.StatusForbidden {
 		t.Fatalf("the second factor went off without the password: %d", w.Code)
 	}
-	if w := call(t, h, "DELETE", "/api/me/2fa", `{"password":"correct horse"}`, c2); w.Code != http.StatusNoContent {
+	if w := call(t, h, http.MethodDelete, "/api/me/2fa", `{"password":"correct horse"}`, c2); w.Code != http.StatusNoContent {
 		t.Fatalf("off: %d", w.Code)
 	}
 }
@@ -168,13 +168,13 @@ func TestAChangedPasswordEndsTheOtherSessions(t *testing.T) {
 	login := `{"username":"admin","password":"correct horse"}`
 	a := session(t, call(t, h, http.MethodPost, "/api/login", login))
 	b := session(t, call(t, h, http.MethodPost, "/api/login", login))
-	if w := call(t, h, "PUT", "/api/me/password", `{"current":"correct horse","new":"short"}`, a); w.Code != http.StatusBadRequest {
+	if w := call(t, h, http.MethodPut, "/api/me/password", `{"current":"correct horse","new":"short"}`, a); w.Code != http.StatusBadRequest {
 		t.Fatalf("a short password: %d", w.Code)
 	}
-	if w := call(t, h, "PUT", "/api/me/password", `{"current":"correct horse","new":"battery staple"}`, a); w.Code != http.StatusNoContent {
+	if w := call(t, h, http.MethodPut, "/api/me/password", `{"current":"correct horse","new":"battery staple"}`, a); w.Code != http.StatusNoContent {
 		t.Fatalf("change: %d %s", w.Code, w.Body)
 	}
-	if call(t, h, "GET", "/api/me", "", a).Code != http.StatusOK || call(t, h, "GET", "/api/me", "", b).Code != http.StatusUnauthorized {
+	if call(t, h, http.MethodGet, "/api/me", "", a).Code != http.StatusOK || call(t, h, http.MethodGet, "/api/me", "", b).Code != http.StatusUnauthorized {
 		t.Fatal("the sessions after a password change")
 	}
 }
@@ -184,17 +184,17 @@ func TestAChangedPasswordEndsTheOtherSessions(t *testing.T) {
 func TestUnregisteredItShowsItsClaimCodeAndIsHealthy(t *testing.T) {
 	_, _, h := newServer(t)
 	c := session(t, call(t, h, http.MethodPost, "/api/login", `{"username":"admin","password":"correct horse"}`))
-	w := call(t, h, "GET", "/api/status", "", c)
+	w := call(t, h, http.MethodGet, "/api/status", "", c)
 	if w.Code != http.StatusOK || !strings.Contains(w.Body.String(), `"claimCode":"TEST-CLAIM"`) {
 		t.Fatalf("status: %d %s", w.Code, w.Body)
 	}
-	if w := call(t, h, "GET", "/.well-known/nx-addon.json", ""); w.Code != http.StatusOK || !strings.Contains(w.Body.String(), `"slug": "notif"`) && !strings.Contains(w.Body.String(), `"slug":"notif"`) {
+	if w := call(t, h, http.MethodGet, "/.well-known/nx-addon.json", ""); w.Code != http.StatusOK || !strings.Contains(w.Body.String(), `"slug": "notif"`) && !strings.Contains(w.Body.String(), `"slug":"notif"`) {
 		t.Fatalf("manifest: %d %s", w.Code, w.Body)
 	}
-	if w := call(t, h, "GET", "/health", ""); w.Code != http.StatusOK {
+	if w := call(t, h, http.MethodGet, "/health", ""); w.Code != http.StatusOK {
 		t.Fatalf("health: %d %s", w.Code, w.Body)
 	}
-	if w := call(t, h, "GET", "/api/nothing", "", c); w.Code != http.StatusNotFound {
+	if w := call(t, h, http.MethodGet, "/api/nothing", "", c); w.Code != http.StatusNotFound {
 		t.Fatalf("an unknown route: %d", w.Code)
 	}
 }

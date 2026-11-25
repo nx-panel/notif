@@ -24,7 +24,7 @@ func E164(raw string) string {
 			b.WriteRune('0' + (r - '۰'))
 		case r >= '٠' && r <= '٩': // Arabic-Indic digits
 			b.WriteRune('0' + (r - '٠'))
-		case strings.ContainsRune(" -().‌", r):
+		case strings.ContainsRune(" -().\u200c", r): // U+200C: the Persian zero-width non-joiner
 		default:
 			return ""
 		}
